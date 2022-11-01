@@ -1,48 +1,19 @@
-var container  = document.querySelector(".container")
-var blocks = [];
-var date = new Date(); 
-
-
-function isCurrentPastOrFuture(hour) { 
-    if (date.getHours() === hour) { 
-        return "present"; 
-    } 
-    else if (date.getHours() > hour) { 
-        return "past"; 
-    } else { 
-        return "future"; 
-    }
-}
-
-for (var i = 0; i < blocks.length; i++) { 
-    var block = document.createElement("div"); 
-    var wrapper = document.createElement("div"); 
-    wrapper.setAttribute("class", "row timeblock");
-    var textbox = document.createElement("textarea"); 
-    if (isCurrentPastOrFuture(blocks[i]) == 1) { 
-        wrapper.classList.add("present");
-    } else if (isCurrentPastOrFuture(blocks[i]) == 2) { 
-        wrapper.classList.add("past");
-    } else if (isCurrentPastOrFuture(blocks[i]) == 3) { 
-        wrapper.classList.add("future"); 
-    }
-    textbox.setAttribute("class", "description"); 
-    block.setAttribute("class", "hour");
-    block.textContent = moment(blocks[i], 'HH').format('hh:mm a');
-    wrapper.appendChild(textbox);
-    container.appendChild(block); 
-    container.appendChild(wrapper); 
-}
-
-// create the save button 
 $(document).ready(function() { 
+    var today = moment(); 
+   
     $('.saveBtn').on('click', function () { 
-        var value = $(this).siblings('description').val(); 
+        // This part classifies what is saved, aka: with scheduledEvent grabbing the value for siblings that is used for the description class. 
+        var value = $(this).siblings(".description").val(); 
         var time = $(this).parent().attr('id');
 
         // creating local storage 
         localStorage.setItem(time, value);
-    })
+
+    $('.notification').addClass('show'); 
+
+    setTimeout(function () { 
+        $('.notification').removeClass('show');
+    }, 5000);
 }); 
 
 function hourUpdater() { 
@@ -53,20 +24,20 @@ function hourUpdater() {
 
         if(blockHour < currentHour) { 
             $(this).addClass('past'); 
-        } else if (blockHour === currentHour) {
+        } else if (blockHour > currentHour) {
             $(this).removeClass('past'); 
-            $(this).addClass('present'); 
+            $(this).addClass('future'); 
         } else { 
             $(this).removeClass('past'); 
-            $(this).removeClass('present');
-            $(this).addClass('Future'); 
+            $(this).removeClass('future');
+            $(this).addClass('present'); 
         }
     }); 
 } 
 
 hourUpdater(); 
 
-var interval = setInterval(hourUpdater, 1500); 
+var interval = setInterval(hourUpdater, 25000); 
 
 $('#hour-6 .description').val(localStorage.getItem('hour-6'));
 $('#hour-7 .description').val(localStorage.getItem('hour-7'));
@@ -84,10 +55,9 @@ $('#hour-18 .description').val(localStorage.getItem('hour-6'));
 $('#hour-19 .description').val(localStorage.getItem('hour-6'));
 
 $('#currentDay').text(moment().format('dddd, MMMM Do')); 
-
-
+ 
+});
+// create the save button 
 // create local.Storage 
 // load any saved data from the local storage 
 // Then display the current day on the page 
-// 
-
