@@ -16,6 +16,7 @@ $(document).ready(function() {
     }, 5000);
 }); 
 
+// function focuses on maining the time from the timeblocks
 function hourUpdater() { 
     var currentHour = moment().hours(); 
 
