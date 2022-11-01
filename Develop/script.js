@@ -2,14 +2,15 @@ var container  = document.querySelector(".container")
 var blocks = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 var date = new Date(); 
 
+
 function isCurrentPastOrFuture(hour) { 
     if (date.getHours() === hour) { 
-        return 1 
+        return "present"; 
     } 
     else if (date.getHours() > hour) { 
-        return 2 // past  
+        return "past"; 
     } else { 
-        return 3 // future
+        return "future"; 
     }
 }
 
@@ -17,6 +18,7 @@ for (var i = 0; i < blocks.length; i++) {
     var block = document.createElement("div"); 
     var wrapper = document.createElement("div"); 
     wrapper.setAttribute("class", "row timeblock"); 
+    wrapper.classList.add(pastPresentOrFuture(blocks[i]));
     var textbox = document.createElement("textarea"); 
     if (isCurrentPastOrFuture(blocks[i]) === 1) { 
         wrapper.classList.add("present");
@@ -32,4 +34,6 @@ for (var i = 0; i < blocks.length; i++) {
     container.appendChild(block); 
     container.appendChild(wrapper); 
 }
+
+
 
